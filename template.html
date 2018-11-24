@@ -1,0 +1,211 @@
+<html>
+  <head>
+
+	<meta name="description" content="This exposition introduces the widely used Paxos protocol for achieving distributed consensus. Instead of introducing Paxos with all its subtle details from the get-go, it derives the protocol step by step allowing you to better appreciate its simplicity and beauty.">
+
+	<title>Paxos from the ground up</title>
+	<meta charset="UTF-8"/>
+    <script src="d3.v4.min.js"></script>
+    <script src="Diagram.js"></script>
+    <script src="PaxosDiagrams.js"></script>
+    <script src="Slideshow.js"></script>
+  </head>
+  <style>
+    body {
+      background-color: #f7f7f7;
+      font: normal 14px/1.65 "PT Sans", "Helvetica", "Arial", sans-serif;
+    }
+
+	#root-container {
+	  text-align: center;
+	}
+
+	#root-container > root {
+	  display: inline-block;
+	}
+
+	#presentation-header {
+	  font-weight: bold;
+	  font-size: 2.5em;
+	  text-align: left;
+	  margin-top: 2em;
+	}
+
+	.first-slide-title {
+	  font-size: 35px;
+	}
+
+    a {
+	  text-decoration: none;
+	}
+
+	.smaller-slide-text {
+	  font-size: 20px;
+	}
+
+    .title {
+	  display: inline-block;
+	  border: 1px solid white;
+	  background-color: #3b21a2;
+      color: white;
+	  margin-top: 10px;
+	  padding-top: 10px;
+	  padding-bottom: 10px;
+	  padding-left: 10px;
+	  padding-right: 50px;
+      white-space: nowrap;
+    }
+
+	.title-text {
+	  font-size: 55px;
+   	  vertical-align: bottom;
+	}
+
+    .section, .subsection, .subsubsection {
+	  display: inline-block;
+      font-weight: normal;
+	  border-bottom: 1px solid gray;
+      white-space: nowrap;
+    }
+
+    .section {
+      font-size: 25px;
+      margin-top: 35px;
+    }
+
+    .subsection {
+	  font-size: 20px;
+      margin-top: 25px;
+    }
+
+    .subsubsection {
+	  font-size: 16px;
+      margin-top: 15px;
+    }
+
+	.scenario {
+      max-width: 700px;
+      display: inline-block;
+	  margin: 30px;
+	  padding: 20px;
+	  border: 1px solid silver;
+	  font-size: 14px;
+	}
+
+	.postmortem-header {
+	  display: inline-block;
+	  font-size: 20px;
+    }
+
+	.algorithm-detail {
+	  margin-left: 50px;
+	}
+
+	.algorithm-node-section {
+      margin-top: 30px;
+  	  text-align: left;
+    }
+
+	.algorithm-node-title {
+	  margin-bottom: 10px;
+	  border-bottom: 1px gray solid;
+	  display: inline-block;
+	}
+
+	.algorithm-node-detail {
+	  margin-left: 20px;
+	}
+
+	circle.node-down {
+	  stroke: red !important;
+	  stroke-dasharray: 10 4;
+	}
+
+    .multi-paxos-example {
+      max-width: 700px;
+      display: inline-block;
+	  margin: 30px;
+	  padding: 20px;
+	  border: 1px solid silver;
+    }
+
+    .button-container {
+	  text-align: center;
+    }
+
+	.button-container > .previous {
+  	  margin-right: 20px;
+	}
+
+	#progress-bar {
+	  width: 50em;
+	}
+
+	#bottom-control-container {
+	  text-align: center;
+	  width: 1000px;
+	  padding-top: 2em;
+	  padding-bottom: 2em;
+	}
+
+	#next-slide-button {
+	  margin-left: 1em;
+	}
+
+	#previous-slide-button {
+	  margin-right: 1em;
+	}
+
+	#slide-container {
+	  border: 1px solid;
+	  text-align: center;
+	  width: 1000px;
+   	  height: 650px;
+	}
+
+	#slide-container:before {
+	  content: '';
+	  display: inline-block;
+	  height: 100%;
+	  vertical-align: middle;
+	}
+
+	.slide-section {
+	  display: inline-block;
+	}
+
+    .slide {
+      display: none;
+	  margin-left: 30px;
+	  margin-right: 30px;
+	  font-size: 25px;
+	  vertical-align: middle;
+    }
+
+	.slide > p {
+	  margin-bottom: 3em;
+	}
+
+	#section-title-container {
+	  font-style: italic;
+	}
+
+  </style>
+  <body>
+	<svg style="width: 0px; height: 0px;">
+	  <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z"/>
+        </marker>
+		<pattern id="circles-1" patternUnits="userSpaceOnUse" width="10" height="10">
+		  <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPScjZmZmJyAvPgogIDxjaXJjbGUgY3g9IjEiIGN5PSIxIiByPSIxIiBmaWxsPSIjMDAwIi8+Cjwvc3ZnPg=="
+				 x="0" y="0" width="10" height="10">
+		  </image>
+		</pattern>
+      </defs>
+	</svg>
+	<div id="root-container">
+	  ◊(->html ◊doc)
+	</div>
+
+</body></html>
