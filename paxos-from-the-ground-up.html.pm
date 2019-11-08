@@ -10,9 +10,9 @@
 ◊div[#:class "slide-section" #:title "Introduction"]{
 
   ◊slide{
-    ◊div{◊img[#:src "images/paxos-symbol.png"]{}}
+    ◊div{◊img[#:src "images/paxos-symbol-2.png"]{}}
     ◊div[#:class "first-slide-title"]{Paxos from the ground up}
-    ◊smaller-slide-text{An exposition by Immad Naseer ◊span[#:style "padding-left: 5px"]{
+◊smaller-slide-text{Immad Naseer ◊span[#:style "padding-left: 5px"]{
 ◊a[#:href "https://www.linkedin.com/in/immad-naseer-b0235014/"]{◊img[#:src "images/linkedin.svg" #:width "12px"]} ◊a[#:href "https://twitter.com/immadnaseer"]{◊img[#:src "images/twitter.svg" #:width "12px"] }}}
   }
 
@@ -87,7 +87,7 @@
   ◊slide{
   	Proposers are responsible proposing values to the acceptors
 
-  	Clients contact one of the proposers if they want the system to choose a certain value and the proposers in turn try to get that value accepted
+  	Clients contact one of the proposers if they want the system to choose a certain value and the proposers in turn try to get that value accepted 
 
   	It’s a good idea to have more than one proposer as the system won’t be functional if there was only one and it crashed and was down for a while
 
@@ -115,7 +115,7 @@
 
   	We’ll extend this simpler algorithm to handle machine failures later
   }
-
+      
 }
 
 ◊div[#:class "slide-section" #:title "Protocol for when no machine goes down"]{
@@ -231,7 +231,7 @@
   }
 
   ◊slide{
-  	Alternative #1
+  	Alternative #1 
 
   	p1’s ◊i{accept} message can reach both acceptors before p2’s ◊i{promise} message reaches either
   }
@@ -272,31 +272,51 @@
   }
 
   ◊slide{
-    The problem arises when the ◊i{accept} message has been accepted by some acceptors but not all.
+    So far the proposers have been competing to get their values chosen. 
 
-    We also know that the acceptors which accepted the message have not received the higher numbered promise message yet (otherwise they wouldn't have accepted the proposal in the first place).
+    What if they co-operated instead of competing?
 
-    And we also know that they must receive that higher numbered proposal before p2 can send its own ◊i{accept} messages.
+    After all, the purpose of the protocol is to get "some" value chosen and not necessarily "my" value chosen
   }
 
   ◊slide{
-    Can we use this knowledge to break out of this situation somehow?
+    What if p2 changed its mind and tried to get blue accepted instead of green if it learned that some acceptor has already accepted blue?
+
+    Will this work?
+ 
+    Will this work in all situations?
   }
 
   ◊slide{
-    How about if the second proposer (p2) co-operates instead of competes so the system chooses a single value?
+    Let's think about it
   }
 
   ◊slide{
-  	An acceptor which has already accepted a value can let the proposer know when it acknowledges its higher-numbered promise message.
+    There are three logical alternatives
 
-  	That proposer can then change its mind and get the value already accepted by some acceptor accepted by the rest
+    p1's accept message reaches all acceptors before p2's promise reaches any 
+    ◊smaller-slide-text{◊i{(we are good in this case)}}
+
+    p2's promise message reaches all acceptors before p1's accept reaches any 
+    ◊smaller-slide-text{◊i{(we are good in this case)}}
+
+    p1's accept reaches some acceptors while p2's promise message reaches others 
+    ◊smaller-slide-text{◊i{(let's think this through)}}
+  }
+
+
+  ◊slide{
+    If p1's ◊i{acccept} message reaches some acceptor, even if just ◊i{one} acceptor, we know that p2 is bound to learn about it as it sends the ◊i{promise} message to all acceptors
+
+    Thus p2 is bound to change its mind as long as even a single acceptor has already accepted a value
   }
 
   ◊slide{
-  	This ensures that as soon as a value is accepted by any acceptor, the remaining acceptors will all ultimately choose that value (even if through a higher-numbered proposal)
+    Once a value has been accepted by some acceptor (even if just one), the other proposers with a higher number proposal number ◊i{have} to get that value chosen instead of whichever value they had in mind earlier
+  }
 
-  	Let’s see it in action
+  ◊slide{
+  	Let’s see this in action
   }
 
   ◊slide{
@@ -306,11 +326,53 @@
   }
 
   ◊slide{
+    This worked!
+
+    We cheated. 
+
+    Just a little.
+  }
+
+  ◊slide{
+    We had earlier said that a1 could never accept another message once it had already accepted some value
+  }
+
+  ◊slide{
+    But a1 ◊i{did} accept the higher numbered blue value sent by p2
+
+    What if p2 had sent green instead? 
+
+    a1 had no choice but to accept that as well
+  }
+
+  ◊slide{
+    So why all this emphasis on co-operation instead of competition?
+  }
+
+  ◊slide{
+    If p2 hadn't changed its mind to try and get blue accepted instead of green, there is no guarantee that yet another proposer (say, p3) could later come along and get its even higher numbered orange value accepted instead
+
+    This cycle would never end
+  }
+
+  ◊slide{
+    If p2 hadn't changed its mind to try and get blue accepted instead of green, there is no guarantee that yet another proposer (say, p3) could later come along and get its even higher numbered orange value accepted instead
+
+    This cycle would never end
+  }
+
+  ◊slide{
+    p2 changing its mind was thus critical for the correctness of the protocol
+
+    Acceptors can still accept a new value after having already accepted some value but the proposers make sure the new value they ask them to accept is the same as the old one (just with a different and higher numbered proposal)
+  }
+
+  ◊slide{
   	Congratulations!
 
   	We have derived the Paxos protocol assuming no machine goes down
   }
-
+    
 }
 
 ◊div[#:class "slide-section" #:title "Protocol for when machines can go down"]{
@@ -322,7 +384,7 @@
   }
 
   ◊slide{
-  	The immediate next question is:
+  	The immediate next question is: 
 
   	How many machine failures can we tolerate?
   }
@@ -447,6 +509,12 @@
   }
 
   ◊slide{
+    We saw that a proposer can get acks with multiple accepted values if it only waits to hear back from majority
+
+    It changes its mind and gets the highest numbered value accepted from among the set of values it receives
+  }
+
+  ◊slide{
   	This is it
 
   	This is the complete Paxos protocol for choosing a single value among a set of machines while tolerating f machine failures
@@ -494,7 +562,7 @@
       }
     }
   }
-
+    
 }
 
 ◊div[#:class "slide-section" #:title "Collapsing multiple roles into a machine"]{
@@ -508,11 +576,11 @@
 
   	The distinguished proposer (aka leader) can be chosen from the set of machines using Paxos itself (think of the “value” being chosen as who will be the leader)
 
-  	Each node plays the role of both an acceptor as well a learner
+    The leader also serves as the distinguished learner and conveys the values it learns to other nodes instead of all of them learning by receiving ◊i{accepted} messages
   }
 
   ◊slide{
-    Let’s see an exchange of messages in such a system where node n1 is the distinguished proposer and n1, n2 and n3 are acceptors and learners
+    Let’s see an exchange of messages in such a system where node n1 is the distinguished proposer and learner and n1, n2 and n3 are acceptors
   }
 
   ◊slide{
@@ -520,7 +588,7 @@
        ◊div[#:id "scenario-9"]{}
     }
   }
-
+     
 }
 
 ◊div[#:class "slide-section" #:title "Multi-Paxos and Replicated State Machines"]{
@@ -579,7 +647,7 @@
 	   n1: [ c1, c2, c3 ]
 	   n2: [ c1, c2, c3 ]
 	   n3: [ c1, c2, c3 ]
-	}
+	}    
   }
 
   ◊slide{
@@ -606,7 +674,7 @@
   }
   ◊slide{
     Since n3 knows c5 has been chosen, it knows the value for the 4th slot must have been chosen by the majority
-
+  
 	◊multi-paxos-example{
 	   n1: [ c1, c2, c3, c4, c5 ]
 	   n2: [ c1, c2, c3, c4, c5 ]
@@ -671,7 +739,7 @@
 	◊li{
 	  ◊a[#:href "https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf"]{The Part-Time Parliament} ◊i{by Leslie Lamport}
 	}
-	}
+	}    
   }
 
   ◊slide{
