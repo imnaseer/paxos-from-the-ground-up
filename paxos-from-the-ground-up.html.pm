@@ -87,7 +87,7 @@
   ◊slide{
   	Proposers are responsible proposing values to the acceptors
 
-  	Clients contact one of the proposers if they want the system to choose a certain value and the proposers in turn try to get that value accepted 
+  	Clients contact one of the proposers if they want the system to choose a certain value and the proposers in turn try to get that value accepted ◊smaller-slide-text{◊i{(we'll not be talking about clients from here on out for simplicity and assume the proposers are trying to get a value suggested by a client accepted by the system)}}
 
   	It’s a good idea to have more than one proposer as the system won’t be functional if there was only one and it crashed and was down for a while
 
@@ -104,8 +104,6 @@
 
   ◊slide{
   	Learners learn what the set of acceptors have chosen as a whole
-
-  	It’s good to have more than one to tolerate temporary downtime but they are not critical for the correct functioning of the protocol
 
   	Let’s pick just one learner as we derive the protocol for simplicity
   }
@@ -177,7 +175,7 @@
   }
 
   ◊slide{
-  	So we bumped into the same problem as before
+  	So we bumped into a similar problem as before
 
   	The ◊i{promise} messages reached the acceptors in an inconvenient order just like the ◊i{accept} messages had reached earlier
 
@@ -187,7 +185,7 @@
   ◊slide{
   	Since acceptors might receive ◊i{promise} messages from multiple proposers, they will need to order them somehow so they accept one or the other but not both
 
-  	We can achieve this be defining the “greater than” operator on proposal numbers; an acceptor only promises to accept a proposal if its proposal number is the highest one it has seen
+  	We can achieve this by defining the “greater than” operator on proposal numbers; an acceptor only promises to accept a proposal if its proposal number is the highest one it has seen
 
     [2, p1] > [1, p1] ◊smaller-slide-text{◊i{(the sequence number of first is greater, proposer name doesn’t matter)}}
   	[1, p2] > [1, p1] ◊smaller-slide-text{◊i{(if the sequence numbers are same, we break the tie using proposer name)}}
@@ -356,12 +354,6 @@
   }
 
   ◊slide{
-    If p2 hadn't changed its mind to try and get blue accepted instead of green, there is no guarantee that yet another proposer (say, p3) could later come along and get its even higher numbered orange value accepted instead
-
-    This cycle would never end
-  }
-
-  ◊slide{
     p2 changing its mind was thus critical for the correctness of the protocol
 
     Acceptors can still accept a new value after having already accepted some value but the proposers make sure the new value they ask them to accept is the same as the old one (just with a different and higher numbered proposal)
@@ -429,7 +421,7 @@
   ◊slide{
   	Let’s derive the protocol for when some machines can go down
 
-  	Let’s consider two propoers as before (p1 and p2) but five acceptors (a1 - a5) and one learner as before
+  	Let’s consider two proposers as before (p1 and p2) but five acceptors (a1 - a5) and one learner as before
 
   	We’ll work towards tolerating the failure of at most two acceptors
   }
