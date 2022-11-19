@@ -10,7 +10,7 @@
 ◊div[#:class "slide-section" #:title "Introduction"]{
 
   ◊slide{
-    ◊div{◊img[#:src "images/paxos-symbol-2.png"]{}}
+    ◊div{◊img[#:src "images/paxos-symbol.png"]{}}
     ◊div[#:class "first-slide-title"]{Paxos from the ground up}
 ◊smaller-slide-text{Immad Naseer ◊span[#:style "padding-left: 5px"]{
 ◊a[#:href "https://www.linkedin.com/in/immad-naseer-b0235014/"]{◊img[#:src "images/linkedin.svg" #:width "12px"]} ◊a[#:href "https://twitter.com/immadnaseer"]{◊img[#:src "images/twitter.svg" #:width "12px"] }}}
