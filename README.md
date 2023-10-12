@@ -3,7 +3,7 @@
 
 This repo contains an exposition to the Paxos protocol which introduces the protocol starting from a simple but incorrect protocol and making gradual refinements several times till we finally reach the complete protocol. The goal is for the reader to understand the protocol at a deeper level by undertaking this journey instead of trying to understand it with all its subtle details from the get go.
 
-You can see a live version at http://imnaseer.net/paxos-from-the-ground-up.html
+You can see a live version at [http://imnaseer.net/paxos-from-the-ground-up.html](https://imnaseer.github.io/paxos-from-the-ground-up/)
 
 ## Enhancing the exposition
 
